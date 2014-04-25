@@ -186,7 +186,7 @@ var bringTheParty = function () {
 var render = function () {
 	if (bg.ready) { ctx.drawImage(bg.img, bg.x, bg.y); }
 	
-	if (party != null) {
+	if (party != null && party.ready) {
 		
 		renderConfetti();
 		
