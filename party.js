@@ -17,6 +17,10 @@ function TrueFalse () {
 	return Math.random() > 0.5;
 }
 
+function Jitter() {
+	return (Math.random() - 0.5) * 10;
+}
+
 // cross browser support for requestAnimationFrame
 window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.mozRequestAnimationFrame;
 
@@ -76,11 +80,16 @@ var party2 = new ImageWrapper("img/party-time-2.png");
 party2.x = 242;
 party2.y = 112;
 
-var party = null;
+var discoBall = new ImageWrapper("img/disco_ball.png");
+var discoBall2 = new ImageWrapper("img/disco_ball2.png");
+var discoBall3 = new ImageWrapper("img/disco_ball3.png");
 
+var party = null;
 var W;
 var H;
-var mp = 150; //max particles
+var mp = 500; //max particles
+var drawDave = 400;
+
 var particles = [];
 function fillConfetti () {
 	W = canvas.width;
@@ -112,6 +121,27 @@ var TiltChangeCountdown = 5;
 var angle = 0;
 var tiltAngle = 0;
 
+function renderDiscoBalls() {
+	if (discoBall.ready && discoBall2.ready && discoBall3.ready) {
+		ctx.drawImage(discoBall2.img, -10 + Jitter(), -10 + Jitter());
+		ctx.drawImage(discoBall3.img, 50 + Jitter(), -3 + Jitter());
+		ctx.drawImage(discoBall.img, 80 + Jitter(), 5 + Jitter());
+		ctx.drawImage(discoBall3.img, 150 + Jitter(), -1 + Jitter());
+		ctx.drawImage(discoBall3.img, 250 + Jitter(), Jitter());
+		ctx.drawImage(discoBall2.img, 360 + Jitter(), 4 + Jitter());
+		ctx.drawImage(discoBall.img, 420 + Jitter(), -20 + Jitter());
+		ctx.drawImage(discoBall2.img, 550 + Jitter(), 10 + Jitter());
+		ctx.drawImage(discoBall3.img, 620 + Jitter(), 2 + Jitter());
+		
+		ctx.drawImage(discoBall2.img, 690 + Jitter(), Jitter());
+		ctx.drawImage(discoBall.img, 720 + Jitter(), -70 + Jitter());
+		ctx.drawImage(discoBall3.img, 790 + Jitter(), Jitter());
+	
+		//ctx.drawImage(discoBall.img, 70 + Jitter(), Jitter());
+		//ctx.drawImage(discoBall.img, 560 + Jitter(), Jitter());
+	}
+}
+
 function renderConfetti () {
 	for (var i = 0; i < mp; i++) {
         var p = particles[i];
@@ -121,6 +151,11 @@ function renderConfetti () {
         ctx.moveTo(p.x + p.tilt + (p.r / 4), p.y);
         ctx.lineTo(p.x + p.tilt, p.y + p.tilt + (p.r / 4));
         ctx.stroke();  // Draw it
+        
+        if (i == drawDave) {
+        	renderDiscoBalls();
+	        ctx.drawImage(party.img, party.x, party.y);
+        }
     }
     
     updateConfetti();
@@ -190,7 +225,7 @@ var render = function () {
 		
 		renderConfetti();
 		
-		ctx.drawImage(party.img, party.x, party.y);
+		//ctx.drawImage(party.img, party.x, party.y);
 	}
 	else if (dave.ready) {
 		ctx.drawImage(dave.img, dave.x, dave.y);
